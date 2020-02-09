@@ -3,7 +3,9 @@ window.addEventListener('DOMContentLoaded', function () {
 
     let tab = document.querySelectorAll('.info-header-tab'),
         info = document.querySelector('.info-header'),
-        tabContent = document.querySelectorAll('.info-tabcontent');
+        tabContent = document.querySelectorAll('.info-tabcontent'),
+        // Первичное назначение кнопки из содержимого первого таба
+        btnMore = document.querySelectorAll('.description-btn');
 
     function hideTabContent(a) {
         for (let i = a; i < tabContent.length; i++) {
@@ -53,7 +55,7 @@ window.addEventListener('DOMContentLoaded', function () {
             minutes = Math.floor((t / 1000 / 60) % 60),
             hours = Math.floor((t / 1000 / 60 / 60));
 
-        if(t <= 0) {
+        if (t <= 0) {
             return {
                 'total': 0,
                 'seconds': 0,
@@ -89,4 +91,31 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     setClock('timer', deadline);
+
+    // Modal window
+
+    let more = document.querySelector('.more'),
+        overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close');
+
+    more.addEventListener('click', function () {
+        overlay.style.display = 'block';
+        this.classList.add('more-splash');
+        document.body.style.overflow = 'hidden';
+    });
+
+    for (let i = 0; i < btnMore.length; i++) {
+        btnMore[i].addEventListener('click', function () {
+            overlay.style.display = 'block';
+            this.classList.add('more-splash');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    close.addEventListener('click', function () {
+        overlay.style.display = 'none';
+        more.classList.remove('more-splash');
+        document.body.style.overflow = '';
+    });
+
 });
