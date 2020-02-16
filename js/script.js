@@ -1,3 +1,4 @@
+// jshint esversion: 6
 window.addEventListener('DOMContentLoaded', function () {
     'use strict';
 
@@ -37,7 +38,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // Timer
 
-    let deadline = '2020-02-10';
+    let deadline = '2020-03-10';
 
     // Использование: addZero(исходное число: число, длина результата: число)
     // функция вернет исходное число с нулями до числа в виде строки
@@ -118,4 +119,48 @@ window.addEventListener('DOMContentLoaded', function () {
         document.body.style.overflow = '';
     });
 
+    // Form
+
+    function sendForm(formName) {
+        let message = {
+            loading: 'Загружается...',
+            success: 'Спасибо, скоро мы с вами свяжемся!',
+            failure: 'Что-то пошло не так!'
+        };
+
+        let form = document.querySelector(formName),
+            input = form.getElementsByTagName('input'),
+            statusMessage = document.createElement('div');
+
+        statusMessage.classList.add('status');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            form.appendChild(statusMessage);
+
+            let request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            let formData = new FormData(form);
+            request.send(formData);
+
+            request.addEventListener('readystatechange', function () {
+                if (request.readyState < 4) {
+                    statusMessage.innerHTML = message.loading;
+                } else if (request.readyState === 4 && request.status == 200) {
+                    statusMessage.innerHTML = message.success;
+                } else {
+                    statusMessage.innerHTML = message.failure;
+                }
+            });
+
+            for (let i = 0; i < input.length; i++) {
+                input[i].value = '';
+            }
+        });
+    }
+
+    sendForm('.main-form');
+    sendForm('form');
 });
