@@ -566,6 +566,10 @@ header ul li:before {
 .content .contact-form form button:hover {
   box-shadow: 0 0 10px #c78030;
 }
+.content .contact-form form .status {
+  padding-top: 20px;
+  color: white;
+}
 .content footer {
   width: 100%;
   height: 250px;
