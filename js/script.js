@@ -121,47 +121,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // Form
 
-
-        // function sendForm(formName) {
-    //     let message = {
-    //         loading: 'Загружается...',
-    //         success: 'Спасибо, скоро мы с вами свяжемся!',
-    //         failure: 'Что-то пошло не так!'
-    //     };
-
-    //     let form = document.querySelector(formName),
-    //         input = form.getElementsByTagName('input'),
-    //         statusMessage = document.createElement('div');
-
-    //     statusMessage.classList.add('status');
-
-    //     form.addEventListener('submit', function (event) {
-    //         event.preventDefault();
-    //         form.appendChild(statusMessage);
-
-    //         let request = new XMLHttpRequest();
-    //         request.open('POST', 'server.php');
-    //         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    //         let formData = new FormData(form);
-    //         request.send(formData);
-
-    //         request.addEventListener('readystatechange', function () {
-    //             if (request.readyState < 4) {
-    //                 statusMessage.innerHTML = message.loading;
-    //             } else if (request.readyState === 4 && request.status == 200) {
-    //                 statusMessage.innerHTML = message.success;
-    //             } else {
-    //                 statusMessage.innerHTML = message.failure;
-    //             }
-    //         });
-
-    //         for (let i = 0; i < input.length; i++) {
-    //             input[i].value = '';
-    //         }
-    //     });
-    // }
-
     function sendForm(formName) {
         let message = {
             loading: 'Загружается...',
@@ -218,4 +177,54 @@ window.addEventListener('DOMContentLoaded', function () {
 
     sendForm('.main-form');
     sendForm('form');
+
+    // Slider
+
+    let slides = document.querySelectorAll('.slider-item'),
+        dotsWrapper = document.querySelector('.slider-dots'),
+        dots = dotsWrapper.querySelectorAll('.dot'),
+        prev = document.querySelector('.prev'),
+        next = document.querySelector('.next'),
+        slideIndex = 1;
+
+    function showSlide(n) {
+        if (n <= 0) {
+            slideIndex = slides.length;
+        }
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+
+        slides.forEach((item) => item.style.display = 'none');
+        slides[slideIndex - 1].style.display = 'block';
+        dots.forEach((item) => item.classList.remove('dot-active'));
+        dots[slideIndex - 1].classList.add('dot-active');
+    }
+
+    prev.addEventListener('click', function() {
+        slideIndex -= 1;
+        showSlide(slideIndex);
+    });
+
+    next.addEventListener('click', function() {
+        slideIndex += 1;
+        showSlide(slideIndex);
+    });
+
+    dotsWrapper.addEventListener('click', function(event) {
+        for(let i = 0; i < dots.length; i++) {
+            if (event.target == dots[i]) {
+                slideIndex = i + 1;
+                showSlide(slideIndex);
+            }
+        }
+
+    });
+    showSlide(slideIndex);
+    let sliderTimer = setTimeout(function run() {
+        slideIndex += 1;
+        showSlide(slideIndex);      
+        setTimeout(run, 6000);
+    }, 6000);
+ 
 });
