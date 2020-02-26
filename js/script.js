@@ -227,4 +227,30 @@ window.addEventListener('DOMContentLoaded', function () {
         setTimeout(run, 6000);
     }, 6000);
  
+    // Calculator
+
+    let persons = document.querySelectorAll('.counter-block-input')[0],
+        days = document.querySelectorAll('.counter-block-input')[1],
+        base = document.getElementById('select'),
+        totalSum = document.getElementById('total'),
+        personsNumber = 0,
+        daysNumber = 0,
+        baseCost = 1;
+
+    totalSum.innerHTML = '0';
+    persons.addEventListener('change', function() {
+        personsNumber = persons.value;
+        totalSum.innerHTML = personsNumber * daysNumber * baseCost * 4000;
+    });
+
+    days.addEventListener('change', function() {
+        daysNumber = days.value;
+        totalSum.innerHTML = personsNumber * daysNumber * baseCost * 4000;
+    });
+
+    base.addEventListener('change', function() {
+        let n = base.options.selectedIndex;
+        baseCost = base.options[n].value;
+        totalSum.innerHTML = personsNumber * daysNumber * baseCost * 4000;
+    });
 });
